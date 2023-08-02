@@ -1,0 +1,96 @@
+<div class="modal-header">
+  <c-col md="6">
+    {{data.dto?.accountName}} - {{data.dto?.walletId}} transactions
+  </c-col>
+  <c-col md="6">
+
+    <form [formGroup]="searchForm" (ngSubmit)="loadTransactions()">
+      <c-input-group>
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd-(Start date)"
+          name="startDate"
+          ngbDatepicker
+          #e="ngbDatepicker"
+          (dateSelect)="onStartDateSelection($event)"
+          formControlName="startDate"
+        />
+        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="e.toggle()" type="button">
+          <svg cIcon name="cilCalendar" size="sm"></svg>
+        </button>
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd (End date)"
+          name="endDate"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          formControlName="endDate"
+        />
+        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button">
+          <svg cIcon name="cilCalendar" size="sm"></svg>
+        </button>
+
+        <button cButton color="secondary"
+                type="submit"
+                size="sm" variant="outline">
+          <svg cIcon name="cilSearch" size="sm"></svg>
+        </button>
+        <button cButton color="secondary"
+                type="button"
+                (click)="activeModal.dismiss('Cross click')"
+                size="sm" variant="outline">
+          <svg cIcon name="cilX" size="sm"></svg>
+        </button>
+      </c-input-group>
+    </form>
+  </c-col>
+</div>
+
+
+<c-row *ngIf="!(accountsTransactions$ | async)">
+  <c-col xs="12">
+    <messages></messages>
+    <br><br>
+    <loading></loading>
+  </c-col>
+</c-row>
+<div class="modal-body">
+  <c-row>
+    <c-col md="12" *ngIf="(accountsTransactions$ | async)as transactionResponse">
+      <table [striped]="true" cTable>
+        <thead>
+        <th scope="col">Amount</th>
+        <th scope="col">Bal Before Transaction</th>
+        <th scope="col">Bal After Transaction</th>
+        <th scope="col">Tran-Type</th>
+        <th scope="col">Source Account</th>
+        <th scope="col">Destination Account</th>
+        <th scope="col">Date</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let transaction of transactionResponse.data;let i = index">
+          <td>R {{transaction.amount | number: '1.2-2'}}</td>
+          <td>R {{transaction.balanceBeforeTransaction | number: '1.2-2'}}</td>
+          <td>R {{transaction.balanceAfterTransaction | number: '1.2-2'}}</td>
+          <td>{{transaction.transactionType}}</td>
+          <td>{{transaction.sourceAccount.walletId}}</td>
+          <td>{{transaction.destinationAccount.walletId}}</td>
+          <td>{{transaction.destinationAccount.dateCreated |  date:'medium'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </c-col>
+  </c-row>
+</div>
+
+
+<div class="modal-footer">
+
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">Cancel
+  </button>
+
+  <button type="button" class="btn btn-primary" *ngIf="!(loadingService.loading$| async)">Send</button>
+
+</div>
+
+

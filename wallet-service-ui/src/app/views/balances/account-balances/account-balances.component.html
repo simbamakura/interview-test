@@ -1,0 +1,36 @@
+<c-row *ngIf="(accounts$ | async)as accountResponse">
+  <c-col xl="3" md="6" sm="6" *ngFor="let account of accountResponse.data;let i = index">
+      <c-widget-stat-f
+
+        [title]="(account.accountName)"
+        class="mb-3"
+        color="primary"
+        padding
+        value="R {{account.balance | number: '1.2-2'}}"
+      >
+        <ng-template cTemplateId="widgetIconTemplate">
+          <svg cIcon name="cilDollar" size="xl" width="24"></svg>
+        </ng-template>
+        <ng-template cTemplateId="widgetFooterTemplate">
+          <ul cListGroup class="font-weight-bold font-xs text-medium-emphasis">
+            <li cListGroupItem>Wallet-Id - {{account.walletId}}</li>
+            <button cListGroupItem (click)="sendMoney(account)">Send Money</button>
+            <button cListGroupItem (click)="viewTransactions(account)">View Transactions</button>
+          </ul>
+        </ng-template>
+
+      </c-widget-stat-f>
+
+  </c-col>
+
+</c-row>
+
+<c-row>
+  <c-col xs="12">
+    <br>
+    <messages></messages>
+    <br><br>
+    <loading></loading>
+
+  </c-col>
+</c-row>

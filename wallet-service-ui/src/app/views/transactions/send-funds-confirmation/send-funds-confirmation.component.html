@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h4 class="modal-title">Confirm the details before hitting send</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+
+
+<c-row *ngIf="!(accounts$ | async)">
+  <c-col xs="12">
+    <messages></messages>
+    <br><br>
+    <loading></loading>
+  </c-col>
+</c-row>
+<div class="modal-body">
+  <c-row>
+    <c-col xs="12" *ngIf="(accounts$ | async)as accountResponse">
+      <ul cListGroup>
+        <li cListGroupItem>Destination Account Name: {{accountResponse.data.accountName}}</li>
+        <li cListGroupItem>Destination Wallet Id: {{accountResponse.data.walletId}}</li>
+        <li cListGroupItem>Amount: R {{confirmationData.amount | number: '1.2-2'}}</li>
+        <li cListGroupItem>Source Wallet Id : {{confirmationData.sourceAccount?.walletId}}</li>
+        <li cListGroupItem>Source Account Account Name: {{confirmationData.sourceAccount?.accountName}}</li>
+      </ul>
+    </c-col>
+  </c-row>
+</div>
+
+
+<div class="modal-footer">
+
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">Cancel
+    </button>
+
+    <button type="button" class="btn btn-primary" (click)="onSend()" *ngIf="!(loadingService.loading$| async)">Send</button>
+    <button cButton class="m-1" disabled *ngIf="loadingService.loading$| async">
+      <c-spinner aria-hidden="true" size="sm"></c-spinner>
+      Processing...
+    </button>
+
+</div>
+
+

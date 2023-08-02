@@ -1,0 +1,43 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h4 class="modal-title">{{data.dto?.accountName}} - {{data.dto?.walletId}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <c-row>
+      <messages></messages>
+    </c-row>
+    <br>
+    <c-row>
+      <c-col xs="12">
+        <c-input-group class="mb-3" sizing="sm">
+          <span cInputGroupText id="street">Amount</span>
+          <input aria-describedby="inputGroup-sizing-sm"
+                 aria-label="Sizing example input"
+                 cFormControl
+                 formControlName="amount"
+          />
+        </c-input-group>
+        <c-input-group class="mb-3" sizing="sm">
+          <span cInputGroupText id="destinationWalletId">Wallet-Id</span>
+          <input aria-describedby="inputGroup-sizing-sm"
+                 aria-label="Sizing example input"
+                 cFormControl
+                 formControlName="destinationWalletId"
+          />
+        </c-input-group>
+
+      </c-col>
+    </c-row>
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">Cancel</button>
+    <button type="submit" class="btn btn-primary" *ngIf="!(loadingService.loading$| async)">Send</button>
+    <button cButton class="m-1" disabled *ngIf="loadingService.loading$| async">
+      <c-spinner aria-hidden="true" size="sm"></c-spinner>
+      Saving...
+    </button>
+  </div>
+</form>

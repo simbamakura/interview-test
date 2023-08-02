@@ -1,0 +1,9 @@
+<div class="spinner-container" *ngIf="loadingService.loading$ | async">
+  <c-row>
+    <c-col md="6" [offset]="{md: 5}">
+      <div class="custom-loader"></div>
+    </c-col>
+  </c-row>
+
+</div>
+
